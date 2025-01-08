@@ -1,0 +1,435 @@
+a. Write a JSP page to display the Registration form (Make your own assumptions) 
+b. Write a JSP program that demonstrates the use of JSP declaration, scriptlet, directives, 
+expression, header and footer. 
+register.html 
+<html> 
+<body > 
+<form action="/examples/jsp/proces.jsp" method=post> 
+<center> 
+<table cellpadding=2 cellspacing=1 border="1" bgcolor="lightblue"> 
+<th bgcolor="lightblue" colspan=2> 
+<font size=5>User Registration</font> 
+<br> 
+<font size=2 color="red"><sup>*</sup> Required Fields</font> 
+</th> 
+<tr bgcolor="lightblue"> 
+<td valign=top>  
+<b>First Name<sup>*</sup></b>  
+<br> 
+<input type="text" name="firstName" value="" size=20 maxlength=20></td> 
+<td valign=top> 
+<b>Last Name<sup>*</sup></b> 
+<br> 
+<input type="text" name="lastName" value="" size=15 maxlength=20></td> 
+</tr> 
+<tr bgcolor="lightblue"> 
+<td valign=top> 
+<b>E-Mail<sup>*</sup></b>  
+<br> 
+<input type="text" name="email" value="" size=25 maxlength=125> 
+NAVEEDH ALI MUHAMED ALI JINNA (168061) 
+ 
+ 
+16 | Page                   Subject:- MCAL12 – Advanced Java Lab 
+ 
+<br></td> 
+<td valign=top> 
+<b>Zip Code<sup>*</sup></b>  
+<br> 
+<input type="text" name="zip" value="" size=10 maxlength=8></td> 
+</tr> 
+<tr bgcolor="lightblue"> 
+<td valign=top colspan=2> 
+<b>User Name<sup>*</sup></b> 
+<br> 
+<input type="text" name="userName" size=20 value="" maxlength=10> 
+</td> 
+</tr> 
+<tr bgcolor="lightblue"> 
+<td valign=top> 
+<b>Password<sup>*</sup></b>  
+<br> 
+<input type="password" name="password1" size=10 value="" maxlength=10></td> 
+<td valign=top> 
+<b>Confirm Password<sup>*</sup></b> 
+<br> 
+<input type="password" name="password2" size=10 value="" maxlength=10></td> 
+<br> 
+</tr> 
+<tr bgcolor="lightblue"> 
+<td valign=top colspan=2> 
+<b>What Technology are you interested in?</b> 
+<br> 
+<input type="checkbox" name="faveTech" value="Java">Java  
+<input type="checkbox" name="faveTech" value="JSP">JSP  
+NAVEEDH ALI MUHAMED ALI JINNA (168061) 
+ 
+ 
+17 | Page                   Subject:- MCAL12 – Advanced Java Lab 
+ 
+<input type="checkbox" name="faveTech" value="Struts 1.1">Struts 1.1<br> 
+<input type="checkbox" name="faveTech" value="Ajax">Ajax  
+<input type="checkbox" name="faveTech" value="Struts 2.0 ">Struts 2.0  
+<input type="checkbox" name="faveTech" value="Servlets">Servlets<br> 
+</td> 
+</tr> 
+<tr bgcolor="lightblue"> 
+<td valign=top colspan=2> 
+<b>Would you like to receive e-mail notifications on our special  
+sales?</b> 
+<br> 
+<input type="radio" name="notify" value="Yes" checked>Yes  
+ 
+<input type="radio" name="notify" value="No" > No  
+<br><br></td> 
+</tr> 
+<tr bgcolor="lightblue"> 
+<td align=center colspan=2> 
+<input type="submit" value="Submit"> <input type="reset"  value="Reset"> 
+</td> 
+</tr> 
+</table> 
+</center> 
+</form> 
+</body> 
+</html> 
+ 
+<%@ page language="java" %> 
+<%@ page import="java.util.*" %> 
+<%!  
+NAVEEDH ALI MUHAMED ALI JINNA (168061) 
+ 
+ 
+18 | Page                   Subject:- MCAL12 – Advanced Java Lab 
+ 
+%> 
+<jsp:useBean id="formHandler" class="test.FormBean" scope="request"> 
+<jsp:setProperty name="formHandler" property="*"/> 
+</jsp:useBean> 
+<%  
+if (formHandler.validate()) { 
+%> 
+<jsp:forward page="success.jsp"/> 
+<% 
+} else { 
+%> 
+<jsp:forward page="retry.jsp"/> 
+<% 
+} 
+%> 
+ 
+ 
+package test; 
+ 
+import java.io.*; 
+import java.util.*; 
+ 
+public class FormBean { 
+private String firstName; 
+private String lastName; 
+private String email; 
+private String userName; 
+private String password1; 
+private String password2; 
+private String zip; 
+NAVEEDH ALI MUHAMED ALI JINNA (168061) 
+ 
+ 
+19 | Page                   Subject:- MCAL12 – Advanced Java Lab 
+ 
+private String[] faveTech; 
+private String notify; 
+private Hashtable errors; 
+public boolean validate() { 
+boolean bool=true; 
+if (firstName.equals("")) { 
+errors.put("firstName","Please enter your first name"); 
+firstName=""; 
+bool=false; 
+} 
+if (lastName.equals("")) { 
+errors.put("lastName","Please enter your last name"); 
+lastName=""; 
+bool=false; 
+} 
+if (email.equals("") || (email.indexOf('@') == -1)) { 
+errors.put("email","Please enter a valid email address"); 
+email=""; 
+bool=false; 
+} 
+if (userName.equals("")) { 
+errors.put("userName","Please enter a username"); 
+userName=""; 
+bool=false; 
+} 
+if (password1.equals("") ) { 
+errors.put("password1","Please enter a valid password"); 
+password1=""; 
+bool=false; 
+} 
+NAVEEDH ALI MUHAMED ALI JINNA (168061) 
+ 
+ 
+20 | Page                   Subject:- MCAL12 – Advanced Java Lab 
+ 
+if (!password1.equals("") && (password2.equals("") ||  
+!password1.equals(password2))) { 
+errors.put("password2","Please confirm your password"); 
+password2=""; 
+bool=false; 
+} 
+if (zip.equals("") || zip.length() !=6 ) { 
+errors.put("zip","Please enter a valid zip code"); 
+zip=""; 
+bool=false; 
+} else { 
+try { 
+int x = Integer.parseInt(zip); 
+} catch (NumberFormatException e) { 
+errors.put("zip","Please enter a valid zip code"); 
+zip=""; 
+bool=false; 
+} 
+} 
+return bool; 
+} 
+public String getErrorMsg(String s) { 
+String errorMsg =(String)errors.get(s.trim()); 
+return (errorMsg == null) ? "":errorMsg; 
+} 
+public FormBean() { 
+firstName=""; 
+lastName=""; 
+email=""; 
+userName=""; 
+NAVEEDH ALI MUHAMED ALI JINNA (168061) 
+ 
+ 
+21 | Page                   Subject:- MCAL12 – Advanced Java Lab 
+ 
+password1=""; 
+password2=""; 
+zip=""; 
+faveTech = new String[] { "1" }; 
+notify=""; 
+errors = new Hashtable(); 
+} 
+public String getFirstName() { 
+return firstName; 
+} 
+public String getLastName() { 
+return lastName; 
+} 
+public String getEmail() { 
+return email; 
+} 
+public String getUserName() { 
+return userName; 
+} 
+public String getPassword1() { 
+return password1; 
+} 
+public String getPassword2() { 
+return password2; 
+} 
+public String getZip() { 
+return zip; 
+} 
+public String getNotify() { 
+return notify; 
+NAVEEDH ALI MUHAMED ALI JINNA (168061) 
+ 
+ 
+22 | Page                   Subject:- MCAL12 – Advanced Java Lab 
+ 
+} 
+public String[] getFaveTech() { 
+return faveTech; 
+} 
+public String isCbSelected(String s) { 
+boolean found=false; 
+if (!faveTech[0].equals("1")) { 
+for (int i = 0; i < faveTech.length; i++) { 
+if (faveTech[i].equals(s)) { 
+found=true;  
+break; 
+} 
+} 
+if (found) return "checked"; 
+}  
+return ""; 
+} 
+public String isRbSelected(String s) { 
+return (notify.equals(s))? "checked" : ""; 
+} 
+public void setFirstName(String fname) { 
+firstName =fname; 
+} 
+public void setLastName(String lname) { 
+lastName =lname; 
+} 
+public void setEmail(String eml) { 
+email=eml; 
+} 
+public void setUserName(String u) { 
+NAVEEDH ALI MUHAMED ALI JINNA (168061) 
+ 
+ 
+23 | Page                   Subject:- MCAL12 – Advanced Java Lab 
+ 
+userName=u; 
+} 
+public void setPassword1(String p1) { 
+password1=p1; 
+} 
+public void setPassword2(String p2) { 
+password2=p2; 
+} 
+public void setZip(String z) { 
+zip=z; 
+} 
+public void setFaveTech(String[] music) { 
+faveTech=music; 
+} 
+public void setErrors(String key, String msg) { 
+errors.put(key,msg); 
+} 
+public void setNotify(String n) { 
+notify=n; 
+} 
+} 
+Success.jsp 
+ 
+<jsp:useBean id="formHandler" class="test.FormBean" scope="request"/> 
+<html>  
+<body> 
+<form action="proces.jsp" method=post> 
+<center> 
+<table cellpadding=4 cellspacing=2 border=0> 
+<th bgcolor="lightblue" colspan=2> 
+NAVEEDH ALI MUHAMED ALI JINNA (168061) 
+ 
+ 
+24 | Page                   Subject:- MCAL12 – Advanced Java Lab 
+ 
+<font size=5>User Registration</font> 
+<br> 
+<font size=2 color="red"><sup>*</sup> Required Fields </font> 
+</th> 
+<tr bgcolor="lightblue"> 
+<td valign=top>  
+<B>First Name<sup>*</sup></B>  
+<br> 
+<input type="text" name="firstName"  
+value='<%=formHandler.getFirstName()%>' size=15 maxlength=20> 
+<br><font size=2  
+color=red><%=formHandler.getErrorMsg("firstName")%></font> 
+</td> 
+<td valign=top> 
+<B>Last Name<sup>*</sup></B> 
+<br> 
+<input type="text" name="lastName"  
+value='<%=formHandler.getLastName()%>' size=15 maxlength=20> 
+<br><font size=2  
+color=red><%=formHandler.getErrorMsg("lastName")%></font> 
+</td> 
+</tr> 
+<tr bgcolor="lightblue"> 
+<td valign=top> 
+<B>E-Mail<sup>*</sup></B>  
+<br> 
+<input type="text" name="email" value='<%=formHandler.getEmail()%>'  
+size=25 maxlength=125> 
+<br><font size=2 color=red><%=formHandler.getErrorMsg("email")%></font> 
+</td> 
+NAVEEDH ALI MUHAMED ALI JINNA (168061) 
+ 
+ 
+25 | Page                   Subject:- MCAL12 – Advanced Java Lab 
+ 
+<td valign=top> 
+<B>Zip Code<sup>*</sup></B>  
+<br> 
+<input type="text" name="zip" value='<%=formHandler.getZip()%>' size=5  
+maxlength=6> 
+<br><font size=2 color=red><%=formHandler.getErrorMsg("zip")%></font> 
+</td> 
+</tr> 
+<tr bgcolor="lightblue"> 
+<td valign=top colspan=2>  
+<B>User Name<sup>*</sup></B> 
+<br> 
+<input type="text" name="userName" size=10  
+value='<%=formHandler.getUserName()%>' maxlength=10> 
+<br><font size=2  
+color=red><%=formHandler.getErrorMsg("userName")%></font> 
+</td> 
+</tr> 
+<tr bgcolor="lightblue"> 
+<td valign=top> 
+<B>Password<sup>*</sup></B>  
+<br> 
+<input type="password" name="password1" size=10  
+value='<%=formHandler.getPassword1()%>' maxlength=10> 
+<br><font size=2  
+color=red><%=formHandler.getErrorMsg("password1")%></font> 
+</td> 
+<td valign=top> 
+<B>Confirm Password<sup>*</sup></B> 
+<br> 
+NAVEEDH ALI MUHAMED ALI JINNA (168061) 
+ 
+ 
+26 | Page                   Subject:- MCAL12 – Advanced Java Lab 
+ 
+<input type="password" name="password2" size=10  
+value='<%=formHandler.getPassword2()%>' maxlength=10> 
+<br><font size=2  
+color=red><%=formHandler.getErrorMsg("password2")%></font> 
+</td> 
+<br> 
+</tr> 
+<tr bgcolor="lightblue"> 
+<td colspan=2 valign=top> 
+<B>What Technology are you interested in?</B> 
+<br> 
+<input type="checkbox" name="faveTech" 
+value="Java"<%=formHandler.isCbSelected("Java")%>>Java  
+<input type="checkbox" name="faveTech" value="JSP"  
+<%=formHandler.isCbSelected("JSP")%>>JSP  
+<input type="checkbox" name="faveTech" value="Struts 1.1"  
+<%=formHandler.isCbSelected("Struts 1.1")%>>Struts 1.1<br> 
+<input type="checkbox" name="faveTech" value="Ajax"  
+<%=formHandler.isCbSelected("Ajax")%>>Ajax  
+<input type="checkbox" name="faveTech" value="Struts 2.0"  
+<%=formHandler.isCbSelected("Struts 2.0")%>>Struts 2.0  
+<input type="checkbox" name="faveTech" value="Servlets"  
+<%=formHandler.isCbSelected("Servlets")%>>Servlets<br> 
+</td> 
+</tr> 
+<tr bgcolor="lightblue"> 
+<td colspan=2 valign=top> 
+<B>Would you like to receive e-mail notifications on our special  
+sales?</B> 
+<br> 
+<input type="radio" name="notify" value="Yes"  
+NAVEEDH ALI MUHAMED ALI JINNA (168061) 
+ 
+ 
+27 | Page                   Subject:- MCAL12 – Advanced Java Lab 
+ 
+<%=formHandler.isRbSelected("Yes")%>>Yes  
+<input type="radio" name="notify" value="No"  
+<%=formHandler.isRbSelected("No")%>> No  
+<br><br></td> 
+</tr> 
+<tr bgcolor="lightblue"> 
+<td colspan=2 align=center> 
+<input type="submit" value="Submit"> <input type="reset"  value="Reset"> 
+</td> 
+</tr> 
+</table> 
+</center> 
+</form> 
+</body> 
+</html> 
