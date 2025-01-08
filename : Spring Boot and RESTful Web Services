@@ -1,0 +1,25 @@
+Aim : - Write a program to create a simple Spring Boot application that prints a message. 
+ package com.javatpoint.controller;   
+import org.springframework.web.bind.annotation.RequestMapping;   
+import org.springframework.web.bind.annotation.RestController;   
+@RestController   
+public class HelloWorldController    
+{   
+@RequestMapping("/")   
+public String hello()    
+{   
+return "Hello javaTpoint";   
+}   
+}   
+ 
+package com.javatpoint;   
+import org.springframework.boot.SpringApplication;   
+import org.springframework.boot.autoconfigure.SpringBootApplication;   
+@SpringBootApplication   
+public class SpringBootHelloWorldExampleApplication   
+{   
+public static void main(String[] args)    
+{   
+SpringApplication.run(SpringBootHelloWorldExampleApplication.class, args);   
+}   
+}   
